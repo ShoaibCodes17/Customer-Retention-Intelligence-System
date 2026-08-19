@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.env
+venv/
+.ipynb_checkpoints/
+.DS_Store
+*.log
+
+notebooks/02_eda.ipynb
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+src/models/*.pkl
+
+# Docker secrets
+docker-compose.override.yml
+.dockerignore

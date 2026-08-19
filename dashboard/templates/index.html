@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RetainIQ — At-Risk Customers</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>RetainIQ</h1>
+    <p>High-value customers flagged as at risk of churn</p>
+  </header>
+
+  <table id="customer-table">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>Churn Probability</th>
+        <th>Frequency of buying</th>
+        <th>total spendings</th>
+        <th>Estimated CLV ($)</th>
+        <th>Days Since Last Order</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadCustomers() {
+      const res = await fetch('/api/customers/at-risk');
+      const data = await res.json();
+      const tbody = document.querySelector('#customer-table tbody');
+      tbody.innerHTML = '';
+      data.forEach(c => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${c.customer_id}</td>
+          <td>${(c.churn_probability * 100).toFixed(1)}%</td>
+          <td>${(c.frequency)}</td>
+          <td>${(c.monetary).toFixed(1)}</td>
+          <td>$${Number(c.estimated_clv).toFixed(2)}</td>
+          <td>${c.recency_days}</td>
+          <td>
+            <button onclick="generateAction('${c.customer_id}')">Generate Action</button>
+            <button onclick="explainCustomer('${c.customer_id}')">Why?</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function generateAction(customerId) {
+      const res = await fetch(`/api/customers/${customerId}/generate-action`, { method: 'POST' });
+      const action = await res.json();
+      alert(`Subject: ${action.subject}\n\n${action.body}\n\nOffer: ${action.offer}`);
+    }
+
+    async function explainCustomer(customerId) {         
+      const res = await fetch(`/api/customers/${customerId}/explain`);
+      const data = await res.json();
+      const reasons = data.top_reasons
+        .map(r => `• ${r.label} (${r.direction})`)
+        .join('\n');
+      alert(`Top factors for customer ${customerId}:\n\n${reasons}`);
+    }
+
+    loadCustomers();
+  </script>
+</body>
+</html>
