@@ -37,13 +37,16 @@ Raw transactions (UCI Online Retail II)
         |                  (recency_ratio, frequency, monetary,
         |                   avg_order_value, estimated_clv, is_churned)
         |
+   models/
+   model_selection.ipnb  -> Selection of model based on performance
+        |
    models/train.py       -> churn_model.pkl (XGBoost)
         |
    models/predict.py     -> MySQL: churn_predictions
         |
    models/explain.py     -> SHAP: per-customer risk factors
         |
-   Flask API (src/api)  --- at-risk list | explain | generate-action
+   Flask API (src/api)  ---> at-risk list | explain | generate-action
         |
    agent/retention_agent.py -> LLM call grounded in customer data + SHAP reasons
         |
