@@ -1,4 +1,4 @@
-# Retention Itelligence System
+# Retention Intelligence System
 
 **Predicts which e-commerce customers are about to churn, explains why in plain language, and drafts a grounded, personalized retention offer for each one — reviewed by a human before it goes out.**
 
