@@ -24,6 +24,10 @@ Online retailers lose a disproportionate share of revenue to high-value customer
 5. Uses an LLM agent to draft a personalized, grounded retention email based on that customer's real purchase history and specific risk factors
 6. Surfaces everything in a review dashboard for a human to approve before any action is taken
 
+## Project Structure
+
+. ├── README.md # Project overview & this structure ├── LICENSE ├── .env.example # Example env vars (DB, LLM provider) ├── docker-compose.yml ├── Dockerfile ├── requirements.txt ├── scripts/ # Convenience scripts │ ├── run_pipeline.sh # Full ETL -> train -> score pipeline │ ├── start.sh # Start dev environment (optional) │ └── seed_db.sh # Seed minimal data for local dev ├── data/ # Datasets (not committed: add to .gitignore) │ ├── raw/ # Original downloads (UCI dataset) │ ├── processed/ # Cleaned/engineered CSVs │ └── external/ # External references, lookups ├── sql/ │ ├── schema.sql # DB schema creation │ └── seed.sql # Optional seed data ├── src/ # Application source code │ ├── api/ │ │ ├── app.py # Flask app entrypoint │ │ ├── routes.py │ │ └── schemas.py │ ├── agent/ │ │ ├── retention_agent.py │ │ └── prompts.py │ ├── data/ │ │ ├── clean.py │ │ └── load_to_db.py │ ├── features/ │ │ ├── rfm.py │ │ └── feature_store.py │ ├── models/ │ │ ├── train.py │ │ ├── predict.py │ │ ├── explain.py │ │ └── model_selection.ipynb │ ├── db/ │ │ ├── db.py # DB connection / session factory │ │ └── migrations/ # Alembic or manual SQL migrations │ └── utils/ │ ├── config.py │ └── logging.py ├── dashboard/ # Review UI │ ├── templates/ │ │ └── index.html │ └── static/ │ ├── css/ │ └── js/ ├── artifacts/ # Generated artifacts (add to .gitignore) │ ├── models/ │ │ └── churn_model.pkl │ └── shap/ # Saved explainability outputs ├── notebooks/ # EDA & experiments │ └── exploratory.ipynb ├── tests/ │ ├── unit/ │ └── integration/ ├── .github/ │ └── workflows/ │ └── ci.yml ├── docs/ # Additional docs and architecture notes │ ├── architecture.md │ └── api.md └── deployments/ # Optional deployment manifests (k8s/helm)
+
 ## Architecture
 
 ```
