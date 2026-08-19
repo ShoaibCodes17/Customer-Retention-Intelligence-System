@@ -29,28 +29,27 @@ Online retailers lose a disproportionate share of revenue to high-value customer
 ```
 Raw transactions (UCI Online Retail II)
         |
-   clean.py            -> data/processed/transactions_clean.csv
+   src/data/clean.py            -> data/processed/transactions_clean.csv
         |
-   load_to_db.py        -> MySQL: customers, transactions
+   src/data/load_to_db.py       -> MySQL: customers, transactions
         |
-   features/rfm.py      -> MySQL: rfm_features
-        |                  (recency_ratio, frequency, monetary,
-        |                   avg_order_value, estimated_clv, is_churned)
+   src/features/rfm.py          -> MySQL: rfm_features
+        |                         (recency_ratio, frequency, monetary,
+        |                         avg_order_value, estimated_clv, is_churned)
+   src/models/
+   model_selection.ipnb         -> Selection of model based on performance
         |
-   models/
-   model_selection.ipnb  -> Selection of model based on performance
+   src/models/train.py          -> churn_model.pkl (XGBoost)
         |
-   models/train.py       -> churn_model.pkl (XGBoost)
+   src/models/predict.py        -> MySQL: churn_predictions
         |
-   models/predict.py     -> MySQL: churn_predictions
+   src/models/explain.py        -> SHAP: per-customer risk factors
         |
-   models/explain.py     -> SHAP: per-customer risk factors
+   Flask API (src/api/app.py)   -> at-risk list | explain | generate-action
         |
-   Flask API (src/api)  ---> at-risk list | explain | generate-action
+   src/agent/retention_agent.py  -> LLM call grounded in customer data + SHAP reasons
         |
-   agent/retention_agent.py -> LLM call grounded in customer data + SHAP reasons
-        |
-   Dashboard (dashboard/)  -> review generated retention actions
+   Dashboard (dashboard/templates/index.html) -> review generated retention actions
 ```
 
 ## Tech stack
