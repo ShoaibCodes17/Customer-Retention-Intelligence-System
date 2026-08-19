@@ -81,8 +81,8 @@ Trained and evaluated on a real dataset — not a synthetic or pre-cleaned Kaggl
 
 **Business impact**
 - Customers flagged at-risk: **3,501**
-- Total estimated CLV flagged at-risk: **£5,758,699.22**
-- Projected value protected: **£863,804.88**, *assuming a 15% win-back rate on contacted customers — this is a stated assumption, not a measured outcome, since there was no A/B control group.*
+- Total estimated CLV flagged at-risk: **$5,758,699.22**
+- Projected value protected: **$863,804.88**, *assuming a 15% win-back rate on contacted customers — this is a stated assumption, not a measured outcome, since there was no A/B control group.*
 
 **A note on the churn rate:** at 61%, "at-risk" describes the majority of the customer base, not a rare minority — expected for a non-subscription retailer where many customers buy once or twice and never return. Because of this, RetainIQ prioritizes flagged customers by estimated CLV rather than treating every flag as an equal-priority alert, so limited retention effort goes to the customers worth protecting most.
 
