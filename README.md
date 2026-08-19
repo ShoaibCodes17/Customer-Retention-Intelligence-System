@@ -26,78 +26,55 @@ Online retailers lose a disproportionate share of revenue to high-value customer
 
 ## Project Structure
 
-A suggested layout for this project — shows purpose of each folder and key files.
-
+```
 .
-├── README.md                 # Project overview & this structure
+├── README.md                   # Project overview & this structure
 ├── LICENSE
-├── .env.example              # Example env vars (DB, LLM provider)
+├── .env.example                # Example env vars (DB, LLM provider)
 ├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
-├── scripts/                  # Convenience scripts
-│   ├── run_pipeline.sh       # Full ETL -> train -> score pipeline
-│   ├── start.sh              # Start dev environment (optional)
-│   └── seed_db.sh            # Seed minimal data for local dev
-├── data/                     # Datasets (not committed: add to .gitignore)
-│   ├── raw/                  # Original downloads (UCI dataset)
-│   ├── processed/            # Cleaned/engineered CSVs
-│   └── external/             # External references, lookups
+├── scripts/                    # Convenience scripts
+│   ├── run_pipeline.sh         # Full ETL -> train -> score pipeline
+│   |__ shap_summary.py         # Shap summary
+├── data/                       # Datasets (not committed: add to .gitignore)
+│   ├── raw/                    # Original downloads (UCI dataset)
+│   |___ processed/             # Cleaned/engineered CSVs
 ├── sql/
-│   ├── schema.sql            # DB schema creation
-│   └── seed.sql              # Optional seed data
-├── src/                      # Application source code
+│   ├── schema.sql              # DB schema creation
+├── src/                        # Application source code
 │   ├── api/
-│   │   ├── app.py            # Flask app entrypoint
-│   │   ├── routes.py
-│   │   └── schemas.py
+│   │   ├── app.py              # Flask app entrypoint
+│   │   ├── routes.py           # Routes for app
+│   │   └── db.py               # Database credentials
 │   ├── agent/
-│   │   ├── retention_agent.py
-│   │   └── prompts.py
+│   │   ├── retention_agent.py  # LLM agent setup
+│   │   └── prompts.py          # Prompt for the LLM
 │   ├── data/
-│   │   ├── clean.py
-│   │   └── load_to_db.py
+│   │   ├── clean.py            # Cleaning the data
+│   │   └── load_to_db.py       # Loading data into the database
 │   ├── features/
-│   │   ├── rfm.py
-│   │   └── feature_store.py
+│   │   ├── rfm.py              # making features 
 │   ├── models/
-│   │   ├── train.py
-│   │   ├── predict.py
-│   │   ├── explain.py
+│   │   ├── train.py            # training the model   
+│   │   ├── predict.py          # predecting the outcomes
+|   |   |---evaluate.py         # evaluate the business outcomes
+│   │   ├── explain.py          # explain the prediction using SHAP
 │   │   └── model_selection.ipynb
-│   ├── db/
-│   │   ├── db.py             # DB connection / session factory
-│   │   └── migrations/       # Alembic or manual SQL migrations
-│   └── utils/
-│       ├── config.py
-│       └── logging.py
-├── dashboard/                # Review UI
-│   ├── templates/
-│   │   └── index.html
+├── dashboard/                  # Review UI
+│   ├── templates/              
+│   │   └── index.html          # interactive dashboard
 │   └── static/
 │       ├── css/
-│       └── js/
-├── artifacts/                # Generated artifacts (add to .gitignore)
-│   ├── models/
-│   │   └── churn_model.pkl
-│   └── shap/                 # Saved explainability outputs
-├── notebooks/                # EDA & experiments
-│   └── exploratory.ipynb
+├── notebooks/                  # EDA & experiments
+│   └── 01_eda.ipynb
+|   |__ books_data.html         # entire EDA in this file
 ├── tests/
-│   ├── unit/
-│   └── integration/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── docs/                     # Additional docs and architecture notes
-│   ├── architecture.md
-│   └── api.md
-└── deployments/              # Optional deployment manifests (k8s/helm)
-
-Notes:
-- Keep large or sensitive files out of git (add data/raw/ and artifacts/ to .gitignore).
-- scripts/run_pipeline.sh should orchestrate data cleaning -> feature engineering -> training -> scoring for reproducible runs.
-- Use src/db for a single place to manage DB sessions and migrations (Alembic recommended for production).
+│   ├── test_api.py
+│   └── test_features.py
+├── docs/                       # Additional docs and architecture notes
+│   ├── shap.png                # SHAP scores
+```
 
 ## Architecture
 
