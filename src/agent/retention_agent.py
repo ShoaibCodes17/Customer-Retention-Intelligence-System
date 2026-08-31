@@ -5,7 +5,7 @@ from src.agent.prompts import RETENTION_EMAIL_PROMPT
 import re
 
 
-def _call_ollama(prompt: str) -> str:
+def _call_ollama(prompt: str)
     resp = requests.post(
         f"{Config.OLLAMA_BASE_URL}/api/generate",
         json={"model": Config.OLLAMA_MODEL, "prompt": prompt, "stream": False},
@@ -15,7 +15,7 @@ def _call_ollama(prompt: str) -> str:
     return resp.json()["response"]
 
 
-def generate_retention_action(customer_row: dict, reasons: list = None) -> dict:
+def generate_retention_action(customer_row: dict, reasons: list = None)
     risk_factors_text = "\n".join(
         f"- {r['label']} ({r['direction']})" for r in (reasons or [])
     ) or "No specific risk factors available."
@@ -32,7 +32,6 @@ def generate_retention_action(customer_row: dict, reasons: list = None) -> dict:
         except json.JSONDecodeError:
             pass
 
-    # Genuine fallback — only reached if no valid JSON could be extracted at all
     return {
         "subject": "We miss you!",
         "body": raw.strip(),
