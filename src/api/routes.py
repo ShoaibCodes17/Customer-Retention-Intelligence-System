@@ -1,12 +1,18 @@
 from flask import Blueprint, jsonify, request, Flask
 import pandas as pd
 from sqlalchemy import text
-from src.api.db import engine
 from src.models.predict import at_risk_customers
 from src.agent.retention_agent import generate_retention_action
 from src.models.explain import explain_customer
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from src.config import Config
+
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
+SessionLocal = sessionmaker(bind=engine)
 
 api = Blueprint("api", __name__)
+
 
 
 @api.route("/health")
