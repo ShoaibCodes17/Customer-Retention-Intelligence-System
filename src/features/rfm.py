@@ -9,7 +9,7 @@ from src.config import Config
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 
 
-def compute_rfm() -> pd.DataFrame:
+def compute_rfm()
     df = pd.read_sql("SELECT * FROM transactions", engine, parse_dates=["invoice_date"])
     observation_date = df["invoice_date"].max() + pd.Timedelta(days=1)
 
