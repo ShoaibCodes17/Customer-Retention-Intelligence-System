@@ -164,14 +164,13 @@ python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Download the [UCI Online Retail II dataset](https://archive.ics.uci.edu/dataset/502/online+retail+ii) into `data/raw/`, then:
+Download the **UCI Online Retail II dataset into** `data/raw/`, then:
 
 ```bash
-bash scripts/run_pipeline.sh    # clean -> load -> features -> train -> score
 python -m src.api.app           # visit http://localhost:5000
 ```
 
-## Known limitations / honest scope
+## Known limitations 
 
 - **No live deployment.** Demonstrated via a recorded walkthrough and a fully reproducible local setup rather than a hosted free-tier link, because the ollama cannot run on live server but we can choose API key of any latest model like "openAI" or "Anthropic".
 
