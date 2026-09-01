@@ -48,13 +48,3 @@ CREATE TABLE IF NOT EXISTS churn_predictions (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
-CREATE TABLE IF NOT EXISTS retention_actions (
-    action_id       INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id     VARCHAR(20),
-    email_subject   VARCHAR(255),
-    email_body      TEXT,
-    suggested_offer VARCHAR(255),
-    status          ENUM('draft','approved','sent') DEFAULT 'draft',
-    generated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
-);
