@@ -11,16 +11,9 @@ from src.config import Config
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine)
 
-api = Blueprint("api", __name__)
+api = Blueprint("api", __name__) # setting the blueprint
 
-
-
-@api.route("/health")
-def health():
-    return jsonify(status="ok")
-
-
-@api.route("/customers/at-risk")
+@api.route("/customers/at-risk") # routing to customers at risk
 def get_at_risk():
     min_prob = float(request.args.get("min_probability", 0.5))
     df = at_risk_customers(min_prob)
@@ -29,8 +22,6 @@ def get_at_risk():
 @api.route("/customers/<customer_id>/explain")
 def explain(customer_id):
     result = explain_customer(customer_id)
-    if "error" in result:
-        return jsonify(result), 404
     return jsonify(result)
 
 @api.route("/customers/<customer_id>/generate-action", methods=["POST"])
@@ -41,8 +32,6 @@ def generate_action(customer_id):
         engine,
         params={"customer_id": customer_id},
     )
-    if df.empty:
-        return jsonify(error="customer not found"), 404
     
     explanation = explain_customer(customer_id)
     reasons = explanation.get("top_reasons", [])
@@ -58,13 +47,3 @@ def generate_action(customer_id):
         )
     return jsonify(action)
 
-@api.route("/customers/<customer_id>/approve", methods=["POST"])
-def approve_action(customer_id):
-    with engine.begin() as conn:
-        conn.exec_driver_sql(
-            """UPDATE retention_actions SET status = 'approved'
-               WHERE customer_id = %s
-               ORDER BY generated_at DESC LIMIT 1""",
-            (customer_id,),
-        )
-    return jsonify(status="approved")
