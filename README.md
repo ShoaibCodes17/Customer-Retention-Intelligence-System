@@ -64,8 +64,7 @@ Online retailers lose a huge share of revenue to customers who go quietly stop b
 │   └── static/
 │       ├── css/
 ├── notebooks/                  # EDA & experiments
-│   └── 01_eda.ipynb
-|   |__ books_data.html         # entire EDA in this file
+│   └── EDA.ipynb
 ├── docs/                       # Additional docs and architecture notes
 │   ├── shap.png                # SHAP scores
 ```
