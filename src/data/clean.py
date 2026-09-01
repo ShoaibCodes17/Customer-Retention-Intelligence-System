@@ -9,7 +9,7 @@ PROCESSED_PATH = BASE_DIR / "data" / "processed"
 PROCESSED_PATH.mkdir(parents=True, exist_ok=True)
 
 
-def load_raw(filename: str = "online_retail_2.csv") -> pd.DataFrame:
+def load_raw(filename: str = "online_retail_2.csv")
     path = RAW_PATH / filename
     if path.suffix == ".csv": 
         df = pd.read_csv(path, encoding="ISO-8859-1")
@@ -36,7 +36,7 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     df = df[~df["invoice_no"].astype(str).str.startswith("C")]
     df = df[(df["quantity"] > 0) & (df["unit_price"] > 0)]
 
-    df["customer_id"] = df["customer_id"].astype(int).astype(str) # CONVERTING THIS INTO A STRING BECAUSE IT'S A UNIQUE IDENTIFIER
+    df["customer_id"] = df["customer_id"].astype(int).astype(str) # CONVERTING THIS INTO STRING BECAUSE IT'S A UNIQUE IDENTIFIER
     df["invoice_date"] = pd.to_datetime(df["invoice_date"])
     df["line_total"] = df["quantity"] * df["unit_price"]
 
