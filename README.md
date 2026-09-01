@@ -15,14 +15,14 @@
 
 ## The problem
 
-Online retailers lose a disproportionate share of revenue to high-value customers who go quiet with no warning. By the time a customer has been inactive long enough to obviously be "gone," it's to[...]
+Online retailers lose a huge share of revenue to customers who go quietly stop buying - often with no warning. By the time a customer has been inactive long enough to obviously be "gone," it's to late for any organization to act
 
 ## What it does
 
 1. Cleans and loads real e-commerce transaction data into MySQL
 2. Engineers customer-level behavioral features (Recency, Frequency, Monetary, estimated CLV)
 3. Trains an XGBoost classifier to predict churn probability per customer
-4. Explains *why* each customer is flagged, using SHAP — not just a probability, a reason
+4. Explains *why* each customer is flagged, using SHAP — not just a probability
 5. Uses an LLM agent to draft a personalized, grounded retention email based on that customer's real purchase history and specific risk factors
 6. Surfaces everything in a review dashboard for a human to approve before any action is taken
 
@@ -33,22 +33,17 @@ Online retailers lose a disproportionate share of revenue to high-value customer
 ├── README.md                   # Project overview & this structure
 ├── LICENSE
 ├── .env.example                # Example env vars (DB, LLM provider)
-├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
-├── scripts/                    # Convenience scripts
-│   ├── run_pipeline.sh         # Full ETL -> train -> score pipeline
-│   |__ shap_summary.py         # Shap summary
 ├── data/                       # Datasets (not committed: add to .gitignore)
 │   ├── raw/                    # Original downloads (UCI dataset)
-│   |___ processed/             # Cleaned/engineered CSVs
+│   |___ processed/             # Cleaned CSVs
 ├── sql/
 │   ├── schema.sql              # DB schema creation
 ├── src/                        # Application source code
 │   ├── api/
 │   │   ├── app.py              # Flask app entrypoint
 │   │   ├── routes.py           # Routes for app
-│   │   └── db.py               # Database credentials
 │   ├── agent/
 │   │   ├── retention_agent.py  # LLM agent setup
 │   │   └── prompts.py          # Prompt for the LLM
@@ -71,9 +66,6 @@ Online retailers lose a disproportionate share of revenue to high-value customer
 ├── notebooks/                  # EDA & experiments
 │   └── 01_eda.ipynb
 |   |__ books_data.html         # entire EDA in this file
-├── tests/
-│   ├── test_api.py
-│   └── test_features.py
 ├── docs/                       # Additional docs and architecture notes
 │   ├── shap.png                # SHAP scores
 ```
@@ -115,14 +107,13 @@ Raw transactions (UCI Online Retail II)
 | Explainability | SHAP (`TreeExplainer`) |
 | Storage | MySQL |
 | API | Flask |
-| Agent | Ollama (local, free — default) or Claude API (optional, faster) |
+| Agent | Ollama (local, free — default)|
 | Dashboard | HTML/JS |
 | Containerization | Docker, Docker Compose |
-| Testing | pytest |
 
 ## Results
 
-Trained and evaluated on a real dataset — not a synthetic or pre-cleaned Kaggle sample.
+Trained and evaluated on a real dataset - not a traditional kaggle dataset
 
 **Dataset**
 - ~779,425 cleaned transaction line items
@@ -144,9 +135,9 @@ Trained and evaluated on a real dataset — not a synthetic or pre-cleaned Kaggl
 
 ## Why the model can be trusted, not just its score
 
-- Evaluated on a genuine **held-out test set**, separate from the folds used for model selection — avoids the optimistic bias of tuning and reporting on the same data.
-- Compared against a logistic regression baseline before committing to XGBoost.
-- Features were deliberately chosen to avoid label leakage: `recency_ratio` (a customer's overdue-ness relative to *their own* historical buying rhythm) is used instead of raw `recency_days`, whic[...]
+- Evaluated on a genuine **held-out test set**, separate from the folds used for model selection — avoids the bias of tuning and reporting on the same data.
+- Compared against a logistic regression and random forest baseline before committing to XGBoost.
+- Features were chosen to avoid label leakage: `recency_ratio` (a customer's overdue-ness relative to *their own* historical buying rhythm) is used instead of raw `recency_days`, whic[...]
 - `customer_id`, `invoice_no`, and `stock_code` are never fed to the model — they're identifiers, not behavioral signal.
 
 ## Explainability (SHAP)
@@ -180,24 +171,7 @@ bash scripts/run_pipeline.sh    # clean -> load -> features -> train -> score
 python -m src.api.app           # visit http://localhost:5000
 ```
 
-The agent defaults to a local Ollama model (`llama3.2`), keeping the project runnable at **$0 cost**. Set `LLM_PROVIDER=anthropic` in `.env` for faster (paid) responses.
-
-## Testing
-
-```bash
-pytest tests/
-```
-
 ## Known limitations / honest scope
 
-This project is intentionally scoped for what's been built and verified — not overclaimed:
+- **No live deployment.** Demonstrated via a recorded walkthrough and a fully reproducible local setup rather than a hosted free-tier link, because the ollama cannot run on live server but we can choose API key of any latest model like "openAI" or "Anthropic".
 
-- **CLV formula is a heuristic**, not a full probabilistic model — `estimated_clv` uses historical spend scaled by a fixed multiplier. A proper BG/NBD + Gamma-Gamma model (via the `lifetimes` librar[...]
-- **Label-lag isn't yet accounted for.** Customers whose first purchase is too recent to have a settled 90-day churn outcome aren't currently excluded from training — a production version shoul[...]
-- **Approve/send flow exists at the API level** (`POST /api/customers/<id>/approve`) but isn't yet wired into the dashboard UI — currently reachable via direct API call only.
-- **No scheduled retraining or scoring pipeline yet.** In production this would split into a frequent scoring job (re-score new customers with the current model) and an infrequent retraining job [...]
-- **No live deployment.** Demonstrated via a recorded walkthrough and a fully reproducible local/Docker setup rather than a hosted free-tier link, to avoid cold-start delays misrepresenting the p[...]
-
-## License
-
-MIT
