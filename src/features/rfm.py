@@ -38,9 +38,8 @@ def compute_rfm()
     rfm["avg_days_between_orders"] = (rfm["avg_days_between_orders"].fillna(rfm["recency_days"])).round(4)
 
     # Simple CLV estimate: average order value x frequency x an assumed loyalty multiplier.
-    # Swap this for a proper BG/NBD or Gamma-Gamma model later if you want to go deeper.
     rfm["avg_order_value"] = (rfm["monetary"] / rfm["frequency"]).round(2)
-    rfm["estimated_clv"] = (rfm["avg_order_value"] * rfm["frequency"] * 1.5).round(2) # taking 1.5 here as an arbitary value by imagining that customer will give us 50% revenue if we retain him
+    rfm["estimated_clv"] = (rfm["avg_order_value"] * rfm["frequency"] * 1.5).round(2) # taking 1.5 here as an arbitary value by assuming that customer will give us 50% revenue if we retain him
 
     # recency_ratio replaces raw recency_days as a feature (from your bias question)
     rfm["recency_ratio"] = (rfm["recency_days"] / rfm["avg_days_between_orders"].replace(0, 1)).round(4)
