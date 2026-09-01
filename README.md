@@ -9,7 +9,7 @@
 
 ## 🎥 Demo
 
-[Watch the walkthrough](#) 
+Watch the walkthrough
 - Short video         :  https://www.youtube.com/watch?v=eBJywc0c6f4
 - Full-detailed video :  https://www.youtube.com/watch?v=YoySq80QXx8&t=13s
 
