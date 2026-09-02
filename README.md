@@ -119,7 +119,7 @@ Trained and evaluated on a real dataset - not a traditional kaggle dataset
 - 5,500+ unique customers
 - Source: UCI "Online Retail II" — real UK-based online retailer transactions
 
-**Model performance** *(held-out test set, not cross-validation)*
+**Model performance** 
 - ROC-AUC: **0.928**
 - Precision (churned class): **0.83**
 - Recall (churned class): **0.97**
@@ -128,7 +128,7 @@ Trained and evaluated on a real dataset - not a traditional kaggle dataset
 **Business impact**
 - Customers flagged at-risk: **3,501**
 - Total estimated CLV flagged at-risk: **$5,758,699.22**
-- Projected value protected: **$863,804.88**, *assuming a 15% win-back rate on contacted customers — this is a stated assumption, not a measured outcome, since there was no A/B control group.*
+- Projected value protected: **$863,804.88**, assuming a 15% win-back rate on contacted customers — this is a stated assumption, not a measured outcome, since there was no A/B control group.
 
 **A note on the churn rate:** at 61%, "at-risk" describes the majority of the customer base, not a rare minority — expected for a non-subscription retailer where many customers buy once or twice[...]
 
@@ -136,7 +136,7 @@ Trained and evaluated on a real dataset - not a traditional kaggle dataset
 
 - Evaluated on a genuine **held-out test set**, separate from the folds used for model selection — avoids the bias of tuning and reporting on the same data.
 - Compared against a logistic regression and random forest baseline before committing to XGBoost.
-- Features were chosen to avoid label leakage: `recency_ratio` (a customer's overdue-ness relative to *their own* historical buying rhythm) is used instead of raw `recency_days`, whic[...]
+- Features were chosen to avoid label leakage: `recency_ratio` (a customer's overdue-ness relative to *their own* historical buying rhythm) is used instead of raw `recency_days`, which a
 - `customer_id`, `invoice_no`, and `stock_code` are never fed to the model — they're identifiers, not behavioral signal.
 
 ## Explainability (SHAP)
