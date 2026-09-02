@@ -159,14 +159,7 @@ git clone <this-repo>
 cd retainiq
 cp .env.example .env          # edit with your DB credentials + LLM provider
 docker compose up -d db       # starts MySQL, applies sql/schema.sql
-python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-```
-
-Download the **UCI Online Retail II dataset into** `data/raw/`, then:
-
-```bash
-python -m src.api.app           # visit http://localhost:5000
 ```
 
 ## Known limitations 
