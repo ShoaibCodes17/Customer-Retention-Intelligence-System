@@ -18,7 +18,7 @@ def get_model():
     return _model
 
 
-def score_all_customers() -> pd.DataFrame:
+def score_all_customers():
     model = get_model()
     df = pd.read_sql("SELECT * FROM rfm_features", engine)
     df["churn_probability"] = model.predict_proba(df[FEATURES])[:, 1]
@@ -31,7 +31,7 @@ def score_all_customers() -> pd.DataFrame:
     return out
 
 
-def at_risk_customers(min_probability: float = 0.5) -> pd.DataFrame:
+def at_risk_customers(min_probability = 0.5):
     query = """
         SELECT p.customer_id, p.churn_probability, r.estimated_clv,
                r.recency_days, r.frequency, r.monetary
