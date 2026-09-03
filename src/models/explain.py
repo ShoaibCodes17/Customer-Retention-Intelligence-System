@@ -37,7 +37,7 @@ def get_explainer():
     return _model, _explainer
 
 
-def explain_customer(customer_id: str, top_n: int = 3) -> dict:
+def explain_customer(customer_id, top_n = 3):
     model, explainer = get_explainer()
 
     row = pd.read_sql(
