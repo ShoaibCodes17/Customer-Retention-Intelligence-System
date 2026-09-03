@@ -15,7 +15,7 @@ api = Blueprint("api", __name__) # setting the blueprint
 
 @api.route("/customers/at-risk") # routing to customers at risk
 def get_at_risk():
-    min_prob = float(request.args.get("min_probability", 0.5))
+    min_prob = 0.5
     df = at_risk_customers(min_prob)
     return jsonify(df.to_dict(orient="records"))
 
