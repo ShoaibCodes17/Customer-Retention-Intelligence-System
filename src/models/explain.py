@@ -30,7 +30,7 @@ def get_explainer():
     if _explainer is None:
         if not MODEL_PATH.exists():
             raise FileNotFoundError(
-                "churn_model.pkl not found — run 'python -m src.models.train' first"
+                "churn_model.pkl not found! train the model first"
             )
         _model = joblib.load(MODEL_PATH)
         _explainer = shap.TreeExplainer(_model)
