@@ -4,7 +4,7 @@ from src.config import Config
 
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 
-def business_impact_report(threshold: float = 0.5, win_back_rate: float = 0.15):
+def business_impact_report(threshold = 0.5, win_back_rate = 0.15):
     df = pd.read_sql(f"""
         SELECT p.customer_id, p.churn_probability, r.estimated_clv
         FROM churn_predictions p JOIN rfm_features r ON p.customer_id = r.customer_id
