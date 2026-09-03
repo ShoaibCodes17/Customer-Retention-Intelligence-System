@@ -1,4 +1,4 @@
-"""Loads the trained model and scores customers for churn probability."""
+"""Loading the trained model and scoring customers for churn probability."""
 import joblib
 import pandas as pd
 from pathlib import Path
