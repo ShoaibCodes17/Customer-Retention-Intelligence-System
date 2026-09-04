@@ -5,7 +5,7 @@ from src.agent.prompts import RETENTION_EMAIL_PROMPT
 import re
 
 
-def _call_ollama(prompt: str):
+def call_ollama(prompt: str):
     resp = requests.post(
         f"{Config.OLLAMA_BASE_URL}/api/generate",
         json={"model": Config.OLLAMA_MODEL, "prompt": prompt, "stream": False},
@@ -18,12 +18,10 @@ def _call_ollama(prompt: str):
 def generate_retention_action(customer_row: dict, reasons: list = None):
     risk_factors_text = "\n".join(
         f"- {r['label']} ({r['direction']})" for r in (reasons or [])
-    ) or "No specific risk factors available."
-    
+    )
     prompt = RETENTION_EMAIL_PROMPT.format( risk_factors=risk_factors_text,**customer_row) 
 
-    if Config.LLM_PROVIDER == "ollama":
-        raw = _call_ollama(prompt)
+    raw = call_ollama(prompt)
 
     match = re.search(r"\{.*\}", raw, re.DOTALL)
     if match:
