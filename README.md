@@ -34,6 +34,7 @@ Online retailers lose a huge share of revenue to customers who go quietly stop b
 ├── LICENSE
 ├── .env.example                # Example env vars (DB, LLM provider)
 ├── Dockerfile
+|---docker-compose.yml
 ├── requirements.txt
 ├── data/                       # Datasets (not committed: add to .gitignore)
 │   ├── raw/                    # Original downloads (UCI dataset)
