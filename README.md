@@ -93,7 +93,7 @@ Raw transactions (UCI Online Retail II)
         |
    Flask API (src/api/app.py)   -> at-risk list | explain | generate-action
         |
-   src/agent/retention_agent.py  -> LLM call grounded in customer data + SHAP reasons
+   src/agent/retention_agent.py  -> LLM calls customer data + SHAP reasons
         |
    Dashboard (dashboard/templates/index.html) -> review generated retention actions
 ```
