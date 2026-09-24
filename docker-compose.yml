@@ -12,7 +12,6 @@ services: # all containers defined in the services
     ports:
       - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
       - ./sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
   web:
@@ -23,5 +22,3 @@ services: # all containers defined in the services
     depends_on:
       - db
 
-volumes:
-  db_data:
